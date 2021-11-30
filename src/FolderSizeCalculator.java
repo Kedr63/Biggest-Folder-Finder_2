@@ -20,6 +20,7 @@ public class FolderSizeCalculator extends RecursiveTask<Long> { //позволя
         long sum = 0;
         List<FolderSizeCalculator> subTasks = new LinkedList<>();
         File[] files = folder.listFiles();
+        assert files != null;
         for (File file : files) {
             FolderSizeCalculator task = new FolderSizeCalculator(file);
             task.fork(); // запустим асинхронно
@@ -30,6 +31,30 @@ public class FolderSizeCalculator extends RecursiveTask<Long> { //позволя
             sum += task.join(); // дождёмся выполнения задачи и прибавим результат
         }
         return sum;
+    }
+    public static String getHumanReadableSize(long size) {
+        String humanReadableSize = "";
+        long kiloByte = 1024;
+        long megaByte = kiloByte * 1024;
+        long gigoByte = megaByte * 1024;
+        long teraByte = gigoByte * 1024;
+
+        if (size < kiloByte) {
+            humanReadableSize = size + "B";
+        }
+        if (size >= kiloByte && size < megaByte) {
+            humanReadableSize = size / kiloByte + "Kb";
+        }
+        if (size >= megaByte && size < gigoByte){
+            humanReadableSize = size / megaByte + "Mb";
+        }
+        if (size >= gigoByte && size < teraByte){
+            humanReadableSize = size / gigoByte + "Gb";
+        }
+        if (size >= teraByte){
+            humanReadableSize = size / teraByte + "Tb";
+        }
+        return humanReadableSize;
     }
 
 }

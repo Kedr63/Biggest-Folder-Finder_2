@@ -11,7 +11,7 @@ public class Main {
         FolderSizeCalculator calculator = new FolderSizeCalculator(file);
         ForkJoinPool pool = new ForkJoinPool(); // управляет количеством потоков которые одновременно работают
         long size = pool.invoke(calculator);
-        System.out.println(size);
+        System.out.println(FolderSizeCalculator.getHumanReadableSize(size));
         /*System.out.println(file.length()); // (238 byte) т/к это директория, то размер будет не настоящий*/
         // System.out.println(getFolderSize(file));
         long duration = System.currentTimeMillis() - start;
@@ -26,6 +26,7 @@ public class Main {
         // далее получим список файлов в этой папке
         long sum = 0;
         File[] files = folder.listFiles();
+        assert files != null;
         for (File file : files) {
             sum += getFolderSize(file);
         }

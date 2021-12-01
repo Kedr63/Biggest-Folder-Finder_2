@@ -11,15 +11,19 @@ public class Main {
         FolderSizeCalculator calculator = new FolderSizeCalculator(file);
         ForkJoinPool pool = new ForkJoinPool(); // управляет количеством потоков которые одновременно работают
         long size = pool.invoke(calculator);
-        String stringSize = FolderSizeCalculator.getHumanReadableSize(size);
+        String stringSize = getHumanReadableSize(size);
         System.out.println(stringSize);
         System.out.println("byte = "+ size);
         System.out.println("после обратного перевода из пользовательского удобно читаемого = "
-                + FolderSizeCalculator.getSizeFromHumanReadable(stringSize));
+                + getSizeFromHumanReadable(stringSize));
+
         /*System.out.println(file.length()); // (238 byte) т/к это директория, то размер будет не настоящий*/
+
         // System.out.println(getFolderSize(file));
         long duration = System.currentTimeMillis() - start;
         System.out.println(duration + "ms");
+
+        System.out.println(getSizeFromHumanReadable("235Kb")); // для проверки
     }
 
     // создадим рекурсивный метод (это первый простой способ без многопоточности)
@@ -34,5 +38,54 @@ public class Main {
             sum += getFolderSize(file);
         }
         return sum;
+    }
+    // Задание из вебинара: создать два метода
+    public static String getHumanReadableSize(long size) {
+        String humanReadableSize = "";
+        long kiloByte = 1024;
+        long megaByte = kiloByte * 1024;
+        long gigoByte = megaByte * 1024;
+        long teraByte = gigoByte * 1024;
+
+        if (size < kiloByte) {
+            humanReadableSize = size + "B";
+        }
+        if (size >= kiloByte && size < megaByte) {
+            humanReadableSize = size / kiloByte + "Kb";
+        }
+        if (size >= megaByte && size < gigoByte){
+            humanReadableSize = size / megaByte + "Mb";
+        }
+        if (size >= gigoByte && size < teraByte){
+            humanReadableSize = size / gigoByte + "Gb";
+        }
+        if (size >= teraByte){
+            humanReadableSize = size / teraByte + "Tb";
+        }
+        return humanReadableSize;
+    }
+
+    public static long getSizeFromHumanReadable(String size){
+        long kiloByte = 1024;
+        long megaByte = kiloByte * 1024;
+        long gigoByte = megaByte * 1024;
+        long teraByte = gigoByte * 1024;
+        long result = 0;
+        if (size.contains("B")){
+            result = Integer.parseInt(size.replaceAll("[^0-9]", ""));
+        }
+        if (size.contains("Kb")){
+            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * kiloByte;
+        }
+        if (size.contains("Mb")){
+            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * megaByte;
+        }
+        if (size.contains("Gb")){
+            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * gigoByte;
+        }
+        if (size.contains("Tb")){
+            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * teraByte;
+        }
+        return (long) result;
     }
 }

@@ -31,55 +31,5 @@ public class FolderSizeCalculator extends RecursiveTask<Long> { //позволя
         }
         return sum;
     }
-    public static String getHumanReadableSize(long size) {
-        String humanReadableSize = "";
-        long kiloByte = 1024;
-        long megaByte = kiloByte * 1024;
-        long gigoByte = megaByte * 1024;
-        long teraByte = gigoByte * 1024;
-
-        if (size < kiloByte) {
-            humanReadableSize = size + "B";
-        }
-        if (size >= kiloByte && size < megaByte) {
-            humanReadableSize = size / kiloByte + "Kb";
-        }
-        if (size >= megaByte && size < gigoByte){
-            humanReadableSize = size / megaByte + "Mb";
-        }
-        if (size >= gigoByte && size < teraByte){
-            humanReadableSize = size / gigoByte + "Gb";
-        }
-        if (size >= teraByte){
-            humanReadableSize = size / teraByte + "Tb";
-        }
-        return humanReadableSize;
-    }
-
-    public static long getSizeFromHumanReadable(String size){
-        long kiloByte = 1024;
-        long megaByte = kiloByte * 1024;
-        long gigoByte = megaByte * 1024;
-        long teraByte = gigoByte * 1024;
-        long result = 0;
-        if (size.contains("B")){
-            result = Integer.parseInt(size.replaceAll("[^0-9]", ""));
-        }
-        if (size.contains("Kb")){
-            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * kiloByte;
-        }
-        if (size.contains("Mb")){
-            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * megaByte;
-        }
-        if (size.contains("Gb")){
-            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * gigoByte;
-        }
-        if (size.contains("Tb")){
-            result = Integer.parseInt(size.replaceAll("[^0-9]", "")) * teraByte;
-        }
-        return (long) result;
-
-
-    }
 
 }

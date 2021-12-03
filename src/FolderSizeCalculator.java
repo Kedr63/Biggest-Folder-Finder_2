@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 public class FolderSizeCalculator extends RecursiveTask<Long> { //позволяет создавать разветляющие потоки,
-    // которые потом можно собирать в едино
+    // которые потом можно собирать воедино
     private File folder;
 
     public FolderSizeCalculator(File folder) {
